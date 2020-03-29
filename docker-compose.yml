@@ -1,0 +1,17 @@
+version: '3.7'
+services:
+  envoy:
+    image: "envoyproxy/envoy-dev:a29664c3a8dfa2337be0781c1cee747aa149f482" # latest master 2020-03-29
+    volumes:
+      - ./envoy/envoy.yaml:/etc/envoy/envoy.yaml
+    ports:
+      - "6002:6002"
+      - "6003:6003"
+  service:
+    image: "golang:1.14.1-alpine3.11"
+    command: go run test_service.go
+    working_dir: /workdir
+    volumes:
+      - ./service:/workdir
+    ports:
+      - "8443:443"
